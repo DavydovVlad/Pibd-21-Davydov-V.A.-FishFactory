@@ -159,19 +159,19 @@ namespace CannedFactoryFileImplement
             if (Canneds != null)
             {
                 var xElement = new XElement("Canneds");
-                foreach (var Canned in Canneds)
+                foreach (var canned in Canneds)
                 {
                     var compElement = new XElement("CannedComponents");
-                    foreach (var component in Canned.CannedComponents)
+                    foreach (var component in canned.CannedComponents)
                     {
                         compElement.Add(new XElement("CannedComponent",
                         new XElement("Key", component.Key),
                         new XElement("Value", component.Value)));
                     }
                     xElement.Add(new XElement("Canned",
-                    new XAttribute("Id", Canned.Id),
-                    new XElement("CannedName", Canned.CannedName),
-                    new XElement("Price", Canned.Price),
+                    new XAttribute("Id", canned.Id),
+                    new XElement("CannedName", canned.CannedName),
+                    new XElement("Price", canned.Price),
                     compElement));
                 }
                 XDocument xDocument = new XDocument(xElement);
