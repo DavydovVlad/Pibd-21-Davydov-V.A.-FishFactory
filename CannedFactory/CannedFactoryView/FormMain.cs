@@ -13,10 +13,13 @@ namespace CannedFactoryView
 
         private readonly OrderLogic _orderLogic;
 
-        public FormMain(OrderLogic orderLogic)
+        private readonly ReportLogic report;
+
+        public FormMain(OrderLogic orderLogic, ReportLogic Report)
         {
             InitializeComponent();
             this._orderLogic = orderLogic;
+            report = Report;
         }
 
         private void FormMain_Load(object sender, EventArgs e)
@@ -116,6 +119,30 @@ namespace CannedFactoryView
         private void buttonRef_Click(object sender, EventArgs e)
         {
             LoadData();
+        }
+
+        private void списокКонсервовToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (var dialog = new SaveFileDialog { Filter = "docx|*.docx" })
+            {
+                if (dialog.ShowDialog() == DialogResult.OK)
+                {
+                    report.SaveCannedsToWordFile(new ReportBindingModel { FileName = dialog.FileName });
+                    MessageBox.Show("Выполнено", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+        }
+
+        private void консервыПоКомпонентамToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var form = Container.Resolve<FormReportComponentCanneds>();
+            form.ShowDialog();
+        }
+
+        private void списокЗаказовToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var form = Container.Resolve<FormReportOrders>();
+            form.ShowDialog();
         }
     }
 }

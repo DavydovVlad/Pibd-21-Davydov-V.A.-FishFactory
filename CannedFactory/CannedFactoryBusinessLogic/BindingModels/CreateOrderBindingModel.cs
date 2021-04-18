@@ -1,4 +1,6 @@
-﻿namespace CannedFactoryBusinessLogic.BindingModels
+﻿using System;
+
+namespace CannedFactoryBusinessLogic.BindingModels
 {
     /// <summary>
     /// Данные от клиента, для создания заказа
