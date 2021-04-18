@@ -148,6 +148,10 @@
       <Project>{d7afd97e-92bc-4d7a-b9e0-ac2e9f8cf9fd}</Project>
       <Name>CannedFactoryBusinessLogic</Name>
     </ProjectReference>
+    <ProjectReference Include="..\CannedFactoryFileImplement\CannedFactoryFileImplement.csproj">
+      <Project>{f57b0694-2880-4310-b4e6-f0346ba13827}</Project>
+      <Name>CannedFactoryFileImplement</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CannedFactoryListImplement\CannedFactoryListImplement.csproj">
       <Project>{1D7AD011-01EB-46D0-9AE1-4B35D666EAAE}</Project>
       <Name>CannedFactoryListImplement</Name>
