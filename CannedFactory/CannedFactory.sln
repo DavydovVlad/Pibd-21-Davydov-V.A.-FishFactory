@@ -5,9 +5,11 @@ VisualStudioVersion = 16.0.29709.97
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CannedFactoryView", "CannedFactoryView\CannedFactoryView.csproj", "{2450FF33-C036-4824-A0D3-ACA4C77FCDE4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CannedFactoryBusinessLogic", "CannedFactoryBusinessLogic\CannedFactoryBusinessLogic.csproj", "{D7AFD97E-92BC-4D7A-B9E0-AC2E9F8CF9FD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CannedFactoryBusinessLogic", "CannedFactoryBusinessLogic\CannedFactoryBusinessLogic.csproj", "{D7AFD97E-92BC-4D7A-B9E0-AC2E9F8CF9FD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CannedFactoryListImplement", "CannedFactoryListImplement\CannedFactoryListImplement.csproj", "{1D7AD011-01EB-46D0-9AE1-4B35D666EAAE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CannedFactoryListImplement", "CannedFactoryListImplement\CannedFactoryListImplement.csproj", "{1D7AD011-01EB-46D0-9AE1-4B35D666EAAE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CannedFactoryFileImplement", "CannedFactoryFileImplement\CannedFactoryFileImplement.csproj", "{F57B0694-2880-4310-B4E6-F0346BA13827}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{1D7AD011-01EB-46D0-9AE1-4B35D666EAAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1D7AD011-01EB-46D0-9AE1-4B35D666EAAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1D7AD011-01EB-46D0-9AE1-4B35D666EAAE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F57B0694-2880-4310-B4E6-F0346BA13827}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F57B0694-2880-4310-B4E6-F0346BA13827}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F57B0694-2880-4310-B4E6-F0346BA13827}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F57B0694-2880-4310-B4E6-F0346BA13827}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
