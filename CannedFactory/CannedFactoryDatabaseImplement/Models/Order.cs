@@ -12,6 +12,10 @@ namespace CannedFactoryDatabaseImplement.Models
 
         public virtual Canned Canned { get; set; }
 
+        public int ClientId { get; set; }
+
+        public virtual Client Client { get; set; }
+
         [Required]
         public int Count { get; set; }
 

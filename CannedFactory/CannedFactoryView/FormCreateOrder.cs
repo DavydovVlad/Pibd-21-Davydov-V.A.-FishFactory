@@ -17,15 +17,18 @@ namespace CannedFactoryView
 
         private readonly OrderLogic _logicO;
 
+        private readonly ClientLogic _logicC;
+
         public int Id { set { id = value; } }
 
         private int? id;
 
-        public FormCreateOrder(CannedLogic logicT, OrderLogic logicO)
+        public FormCreateOrder(CannedLogic logicT, OrderLogic logicO, ClientLogic logicC)
         {
             InitializeComponent();
             _logicT = logicT;
             _logicO = logicO;
+            _logicC = logicC;
         }
 
         private void comboBoxCanned_SelectedIndexChanged(object sender, EventArgs e)
@@ -42,13 +45,21 @@ namespace CannedFactoryView
         {
             try
             {
-                List<CannedViewModel> list = _logicT.Read(null);
-                if (list != null)
+                List<CannedViewModel> listCanneds = _logicT.Read(null);
+                List<ClientViewModel> listClients = _logicC.Read(null);
+                if (listCanneds != null)
                 {
                     comboBoxCanned.DisplayMember = "CannedName";
                     comboBoxCanned.ValueMember = "Id";
-                    comboBoxCanned.DataSource = list;
+                    comboBoxCanned.DataSource = listCanneds;
                     comboBoxCanned.SelectedItem = null;
+                }
+                if (listClients != null)
+                {
+                    comboBoxClient.DisplayMember = "ClientFIO";
+                    comboBoxClient.ValueMember = "Id";
+                    comboBoxClient.DataSource = listClients;
+                    comboBoxClient.SelectedItem = null;
                 }
             }
             catch (Exception ex)
@@ -87,10 +98,16 @@ namespace CannedFactoryView
                 MessageBox.Show("Выберите консервы", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+            if (comboBoxClient.SelectedValue == null)
+            {
+                MessageBox.Show("Выберите клиента", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
             try
             {
                 _logicO.CreateOrder(new CreateOrderBindingModel
                 {
+                    ClientId = Convert.ToInt32(comboBoxClient.SelectedValue),
                     CannedId = Convert.ToInt32(comboBoxCanned.SelectedValue),
                     Count = Convert.ToInt32(textBoxCount.Text),
                     Sum = Convert.ToDecimal(textBoxSum.Text)

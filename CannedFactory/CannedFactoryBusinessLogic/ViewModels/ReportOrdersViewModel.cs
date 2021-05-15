@@ -4,6 +4,8 @@ namespace CannedFactoryBusinessLogic.ViewModels
 {
     public class ReportOrdersViewModel
     {
+        public string ClientFIO { get; set; }
+
         public DateTime DateCreate { get; set; }
 
         public string CannedName { get; set; }
