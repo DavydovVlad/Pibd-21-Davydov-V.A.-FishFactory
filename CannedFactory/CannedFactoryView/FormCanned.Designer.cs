@@ -221,7 +221,7 @@
 			this.Controls.Add(this.labelPrice);
 			this.Controls.Add(this.labelName);
 			this.Name = "FormCanned";
-			this.Text = "Рыбные консервы";
+			this.Text = "Туристическая путёвка";
 			this.Load += new System.EventHandler(this.FormCanned_Load);
 			this.groupBoxComponents.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();

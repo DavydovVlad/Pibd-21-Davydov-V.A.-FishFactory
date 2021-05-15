@@ -80,7 +80,7 @@ namespace CannedFactoryView
             this.panel1.Controls.Add(this.dateTimePickerFrom);
             this.panel1.Location = new System.Drawing.Point(3, 1);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(879, 40);
+            this.panel1.Size = new System.Drawing.Size(886, 40);
             this.panel1.TabIndex = 1;
             // 
             // reportViewer
@@ -89,14 +89,14 @@ namespace CannedFactoryView
             this.reportViewer.Location = new System.Drawing.Point(3, 42);
             this.reportViewer.Name = "reportViewer";
             this.reportViewer.ServerReport.BearerToken = null;
-            this.reportViewer.Size = new System.Drawing.Size(879, 408);
+            this.reportViewer.Size = new System.Drawing.Size(886, 408);
             this.reportViewer.TabIndex = 2;
             // 
             // FormReportOrders
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(881, 450);
+            this.ClientSize = new System.Drawing.Size(889, 450);
             this.Controls.Add(this.reportViewer);
             this.Controls.Add(this.panel1);
             this.Name = "FormReportOrders";

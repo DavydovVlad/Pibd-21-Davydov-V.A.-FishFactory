@@ -27,7 +27,7 @@ namespace CannedFactoryListImplement.Implements
         }
 
         public List<OrderViewModel> GetFilteredList(OrderBindingModel model)
-        {  
+        {
             if (model == null)
             {
                 return null;
@@ -35,8 +35,9 @@ namespace CannedFactoryListImplement.Implements
             List<OrderViewModel> result = new List<OrderViewModel>();
             foreach (var order in source.Orders)
             {
-                if ((!model.DateFrom.HasValue && !model.DateTo.HasValue && order.DateCreate.Date == model.DateCreate.Date) ||
-                (model.DateFrom.HasValue && model.DateTo.HasValue && order.DateCreate.Date >= model.DateFrom.Value.Date && order.DateCreate.Date <= model.DateTo.Value.Date))
+                if ((!model.DateFrom.HasValue && !model.DateTo.HasValue && order.DateCreate.Date == model.DateCreate.Date) || 
+                    (model.DateFrom.HasValue && model.DateTo.HasValue && order.DateCreate.Date >= model.DateFrom.Value.Date && order.DateCreate.Date <= model.DateTo.Value.Date)
+                    || (model.ClientId.HasValue && order.ClientId == model.ClientId))
                 {
                     result.Add(CreateModel(order));
                 }
@@ -111,17 +112,26 @@ namespace CannedFactoryListImplement.Implements
             order.Status = model.Status;
             order.DateCreate = model.DateCreate;
             order.DateImplement = model.DateImplement;
+            order.ClientId = model.ClientId.Value;
             return order;
         }
 
         private OrderViewModel CreateModel(Order order)
         {
             string cannedName = null;
+            string clientFIO = null;
             foreach (var canned in source.Canneds)
             {
                 if (canned.Id == order.CannedId)
                 {
                     cannedName = canned.CannedName;
+                }
+            }
+            foreach (var client in source.Clients)
+            {
+                if (client.Id == order.ClientId)
+                {
+                    clientFIO = client.ClientFIO;
                 }
             }
             return new OrderViewModel
@@ -133,7 +143,9 @@ namespace CannedFactoryListImplement.Implements
                 Sum = order.Sum,
                 Status = order.Status,
                 DateCreate = order.DateCreate,
-                DateImplement = order.DateImplement
+                DateImplement = order.DateImplement,
+                ClientId = order.ClientId,
+                ClientFIO = clientFIO
             };
         }
     }

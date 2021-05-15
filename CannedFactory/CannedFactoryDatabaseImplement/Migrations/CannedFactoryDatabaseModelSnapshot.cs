@@ -19,6 +19,30 @@ namespace CannedFactoryDatabaseImplement.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("CannedFactoryDatabaseImplement.Models.Client", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ClientFIO")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Clients");
+                });
+
             modelBuilder.Entity("CannedFactoryDatabaseImplement.Models.Component", b =>
                 {
                     b.Property<int>("Id")
@@ -42,6 +66,9 @@ namespace CannedFactoryDatabaseImplement.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("ClientId")
+                        .HasColumnType("int");
+
                     b.Property<int>("Count")
                         .HasColumnType("int");
 
@@ -61,6 +88,8 @@ namespace CannedFactoryDatabaseImplement.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ClientId");
 
                     b.HasIndex("CannedId");
 
@@ -113,6 +142,12 @@ namespace CannedFactoryDatabaseImplement.Migrations
 
             modelBuilder.Entity("CannedFactoryDatabaseImplement.Models.Order", b =>
                 {
+                    b.HasOne("CannedFactoryDatabaseImplement.Models.Client", "Client")
+                        .WithMany("Order")
+                        .HasForeignKey("ClientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("CannedFactoryDatabaseImplement.Models.Canned", "Canned")
                         .WithMany("Order")
                         .HasForeignKey("CannedId")

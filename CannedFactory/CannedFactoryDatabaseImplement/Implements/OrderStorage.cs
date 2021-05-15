@@ -17,6 +17,7 @@ namespace CannedFactoryDatabaseImplement.Implements
             {
                 return context.Orders
                 .Include(rec => rec.Canned)
+                .Include(rec => rec.Client)
                 .Select(rec => new OrderViewModel
                 {
                     Id = rec.Id,
@@ -26,7 +27,9 @@ namespace CannedFactoryDatabaseImplement.Implements
                     Sum = rec.Sum,
                     Status = rec.Status,
                     DateCreate = rec.DateCreate,
-                    DateImplement = rec.DateImplement
+                    DateImplement = rec.DateImplement,
+                    ClientId = rec.ClientId,
+                    ClientFIO = rec.Client.ClientFIO
                 })
                 .ToList();
             }
@@ -42,8 +45,10 @@ namespace CannedFactoryDatabaseImplement.Implements
             {
                 return context.Orders
                 .Include(rec => rec.Canned)
+                .Include(rec => rec.Client)
                 .Where(rec => (!model.DateFrom.HasValue && !model.DateTo.HasValue && rec.DateCreate.Date == model.DateCreate.Date) ||
-                (model.DateFrom.HasValue && model.DateTo.HasValue && rec.DateCreate.Date >= model.DateFrom.Value.Date && rec.DateCreate.Date <= model.DateTo.Value.Date))
+                (model.DateFrom.HasValue && model.DateTo.HasValue && rec.DateCreate.Date >= model.DateFrom.Value.Date && rec.DateCreate.Date <= model.DateTo.Value.Date)
+                || (model.ClientId.HasValue && rec.ClientId == model.ClientId))
                 .Select(rec => new OrderViewModel
                 {
                     Id = rec.Id,
@@ -53,7 +58,9 @@ namespace CannedFactoryDatabaseImplement.Implements
                     Sum = rec.Sum,
                     Status = rec.Status,
                     DateCreate = rec.DateCreate,
-                    DateImplement = rec.DateImplement
+                    DateImplement = rec.DateImplement,
+                    ClientId = rec.ClientId,
+                    ClientFIO = rec.Client.ClientFIO
                 })
                 .ToList();
             }
@@ -69,6 +76,7 @@ namespace CannedFactoryDatabaseImplement.Implements
             {
                 var order = context.Orders
                 .Include(rec => rec.Canned)
+                .Include(rec => rec.Client)
                 .FirstOrDefault(rec => rec.Id == model.Id);
                 return order != null ?
                 new OrderViewModel
@@ -80,7 +88,9 @@ namespace CannedFactoryDatabaseImplement.Implements
                     Sum = order.Sum,
                     Status = order.Status,
                     DateCreate = order.DateCreate,
-                    DateImplement = order.DateImplement
+                    DateImplement = order.DateImplement,
+                    ClientId = order.ClientId,
+                    ClientFIO = order.Client.ClientFIO
                 } :
                 null;
             }
@@ -134,6 +144,7 @@ namespace CannedFactoryDatabaseImplement.Implements
             order.Status = model.Status;
             order.DateCreate = model.DateCreate;
             order.DateImplement = model.DateImplement;
+            order.ClientId = model.ClientId.Value;
             return order;
         }
     }
