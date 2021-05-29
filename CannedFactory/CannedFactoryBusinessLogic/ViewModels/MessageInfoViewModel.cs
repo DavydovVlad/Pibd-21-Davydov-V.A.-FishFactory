@@ -1,5 +1,5 @@
 ﻿using System;
-using System.ComponentModel;
+using CannedFactoryBusinessLogic.Attributes;
 using System.Runtime.Serialization;
 
 namespace CannedFactoryBusinessLogic.ViewModels
@@ -8,21 +8,22 @@ namespace CannedFactoryBusinessLogic.ViewModels
     public class MessageInfoViewModel
     {
         [DataMember]
+		[Column(visible: false)]
         public string MessageId { get; set; }
 
-        [DisplayName("Sender")]
+        [Column(title: "Sender", width: 100)]
         [DataMember]
         public string SenderName { get; set; }
 
-        [DisplayName("Delivery date")]
+        [Column(title: "Delivery date", width: 100)]
         [DataMember]
         public DateTime DateDelivery { get; set; }
 
-        [DisplayName("Subject")]
+        [Column(title: "Subject", width: 100)]
         [DataMember]
         public string Subject { get; set; }
 
-        [DisplayName("Text")]
+        [Column(title: "Text", gridViewAutoSize: GridViewAutoSize.Fill)]
         [DataMember]
         public string Body { get; set; }
 

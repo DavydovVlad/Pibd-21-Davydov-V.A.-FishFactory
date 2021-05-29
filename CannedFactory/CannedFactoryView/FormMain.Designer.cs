@@ -37,6 +37,8 @@
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.справочникиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.компонентыToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.mailsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.createBackupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.startWorkingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.рыбныеКонсервыToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.отчетыToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -45,6 +47,8 @@
             this.списокЗаказовToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.клиентыToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
+			this.mailsToolStripMenuItem,
+            this.createBackupToolStripMenuItem});
             this.menuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -116,7 +120,21 @@
             this.menuStrip.Size = new System.Drawing.Size(899, 24);
             this.menuStrip.TabIndex = 7;
             this.menuStrip.Text = "menuStrip";
+            //
+			// mailsToolStripMenuItem
             // 
+            this.mailsToolStripMenuItem.Name = "mailsToolStripMenuItem";
+            this.mailsToolStripMenuItem.Size = new System.Drawing.Size(47, 20);
+            this.mailsToolStripMenuItem.Text = "Mails";
+            this.mailsToolStripMenuItem.Click += new System.EventHandler(this.mailsToolStripMenuItem_Click);
+            // 
+            // createBackupToolStripMenuItem
+            // 
+            this.createBackupToolStripMenuItem.Name = "createBackupToolStripMenuItem";
+            this.createBackupToolStripMenuItem.Size = new System.Drawing.Size(95, 20);
+            this.createBackupToolStripMenuItem.Text = "Create backup";
+            this.createBackupToolStripMenuItem.Click += new System.EventHandler(this.createBackupToolStripMenuItem_Click);
+			// 
             // справочникиToolStripMenuItem
             // 
             this.справочникиToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -236,5 +254,6 @@
         private System.Windows.Forms.ToolStripMenuItem клиентыToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem startWorkingToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem implementersToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem createBackupToolStripMenuItem;
     }
 }
