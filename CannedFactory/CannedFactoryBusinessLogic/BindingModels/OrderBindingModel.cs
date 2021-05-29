@@ -11,7 +11,9 @@ namespace CannedFactoryBusinessLogic.BindingModels
         public int? Id { get; set; }
 
         public int? ClientId { get; set; }
-
+		
+		public int? ImplementerId { get; set; }
+		
         public int CannedId { get; set; }
 
         public int Count { get; set; }
@@ -27,5 +29,8 @@ namespace CannedFactoryBusinessLogic.BindingModels
         public DateTime? DateFrom { get; set; }
 
         public DateTime? DateTo { get; set; }
+		
+		public bool? FreeOrders { get; set; }
+
     }
 }

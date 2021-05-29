@@ -33,10 +33,10 @@ namespace CannedFactoryFileImplement.Implements
             return source.Orders
             .Where(rec => (!model.DateFrom.HasValue && !model.DateTo.HasValue && rec.DateCreate.Date == model.DateCreate.Date) || 
             (model.DateFrom.HasValue && model.DateTo.HasValue && rec.DateCreate.Date >= model.DateFrom.Value.Date && rec.DateCreate.Date <= model.DateTo.Value.Date) 
-            || (model.ClientId.HasValue && rec.ClientId == model.ClientId))
-            .Select(CreateModel)
-            .ToList();
-        }
+            || (model.ClientId.HasValue && rec.ClientId == model.ClientId))||
+			(model.FreeOrders.HasValue && model.FreeOrders.Value && rec.Status == OrderStatus.Принят) ||
+            (model.ImplementerId.HasValue && rec.ImplementerId == model.ImplementerId && rec.Status == OrderStatus.Выполняется))
+             .Select(CreateModel).ToList();        }
 
         public OrderViewModel GetElement(OrderBindingModel model)
         {
@@ -63,6 +63,10 @@ namespace CannedFactoryFileImplement.Implements
             {
                 throw new Exception("Элемент не найден");
             }
+			 if (!model.ImplementerId.HasValue)
+            {
+                model.ImplementerId = element.ImplementerId;
+            }
             CreateModel(model, element);
         }
 
@@ -88,6 +92,7 @@ namespace CannedFactoryFileImplement.Implements
             order.DateCreate = model.DateCreate;
             order.DateImplement = model.DateImplement;
             order.ClientId = model.ClientId.Value;
+			order.ImplementerId = model.ImplementerId;
             return order;
         }
 
@@ -98,12 +103,14 @@ namespace CannedFactoryFileImplement.Implements
                 Id = order.Id,
                 CannedId = order.CannedId,
                 CannedName = source.Canneds.FirstOrDefault(t => t.Id == order.CannedId)?.CannedName,
+                ImplementerFIO = source.Implementers.FirstOrDefault(implementer => implementer.Id == order.ImplementerId)?.ImplementerFIO,
                 Count = order.Count,
                 Sum = order.Sum,
                 Status = order.Status,
                 DateCreate = order.DateCreate,
                 DateImplement = order.DateImplement,
                 ClientId = order.ClientId,
+				ImplementerId = order.ImplementerId,
                 ClientFIO = source.Clients.FirstOrDefault(c => c.Id == order.ClientId)?.ClientFIO
             };
         }

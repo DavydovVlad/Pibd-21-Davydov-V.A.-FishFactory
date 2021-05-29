@@ -14,6 +14,9 @@ namespace CannedFactoryBusinessLogic.ViewModels
         [DataMember]
         public int Id { get; set; }
 
+		[DataMember]
+        public int? ImplementerId { get; set; }
+
         [DataMember] 
         public int ClientId { get; set; }
 
@@ -29,6 +32,10 @@ namespace CannedFactoryBusinessLogic.ViewModels
         public string CannedName { get; set; }
 
         [DataMember]
+        [DisplayName("Implementer")]
+        public string ImplementerFIO { get; set; }
+        
+		[DataMember]
         [DisplayName("Количество")]
         public int Count { get; set; }
 

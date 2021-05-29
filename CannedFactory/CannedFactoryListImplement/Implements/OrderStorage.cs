@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using CannedFactoryBusinessLogic.Enums;
 using CannedFactoryBusinessLogic.BindingModels;
 using CannedFactoryBusinessLogic.Interfaces;
 using CannedFactoryBusinessLogic.ViewModels;
@@ -37,7 +38,9 @@ namespace CannedFactoryListImplement.Implements
             {
                 if ((!model.DateFrom.HasValue && !model.DateTo.HasValue && order.DateCreate.Date == model.DateCreate.Date) || 
                     (model.DateFrom.HasValue && model.DateTo.HasValue && order.DateCreate.Date >= model.DateFrom.Value.Date && order.DateCreate.Date <= model.DateTo.Value.Date)
-                    || (model.ClientId.HasValue && order.ClientId == model.ClientId))
+                    || (model.ClientId.HasValue && order.ClientId == model.ClientId)) ||
+                (model.FreeOrders.HasValue && model.FreeOrders.Value && order.Status == OrderStatus.Принят) ||
+                (model.ImplementerId.HasValue && order.ImplementerId == model.ImplementerId && order.Status == OrderStatus.Выполняется))
                 {
                     result.Add(CreateModel(order));
                 }
@@ -88,6 +91,14 @@ namespace CannedFactoryListImplement.Implements
             {
                 throw new Exception("Элемент не найден");
             }
+			if (!model.ClientId.HasValue)
+            {
+                model.ClientId = tempOrder.ClientId;
+            }
+            if (!model.ImplementerId.HasValue)
+            {
+                model.ImplementerId = tempOrder.ImplementerId;
+            }
             CreateModel(model, tempOrder);
         }
 
@@ -113,39 +124,53 @@ namespace CannedFactoryListImplement.Implements
             order.DateCreate = model.DateCreate;
             order.DateImplement = model.DateImplement;
             order.ClientId = model.ClientId.Value;
+            order.ImplementerId = model.ImplementerId;
             return order;
         }
 
         private OrderViewModel CreateModel(Order order)
         {
-            string cannedName = null;
-            string clientFIO = null;
-            foreach (var canned in source.Canneds)
+            var Canned = "";
+            var ClientName = "";
+            var ImplementerFIO = "";
+            foreach (var car in source.Cars)
             {
-                if (canned.Id == order.CannedId)
+                if (car.Id == order.CarId)
                 {
-                    cannedName = canned.CannedName;
+                    CarName = car.CarName;
+                    break;
                 }
             }
             foreach (var client in source.Clients)
             {
                 if (client.Id == order.ClientId)
                 {
-                    clientFIO = client.ClientFIO;
+                    ClientName = client.ClientFIO;
+                    break;
                 }
             }
-            return new OrderViewModel
+            foreach (var implementer in source.Implementers)
+            {
+                if (implementer.Id == order.ImplementerId)
+                {
+                    ImplementerFIO = implementer.ImplementerFIO;
+                    break;
+                }
+            }
+			return new OrderViewModel
             {
                 Id = order.Id,
-                CannedId = order.CannedId,
-                CannedName = cannedName,
+                CannedId = order.CarId,
+                ClientId = order.ClientId,
+                ImplementerId = order.ImplementerId,
+                Canned = CarName,
+                ClientFIO = ClientName,
+                ImplementerFIO = ImplementerFIO,
                 Count = order.Count,
                 Sum = order.Sum,
                 Status = order.Status,
                 DateCreate = order.DateCreate,
-                DateImplement = order.DateImplement,
-                ClientId = order.ClientId,
-                ClientFIO = clientFIO
+                DateImplement = order.DateImplement
             };
         }
     }

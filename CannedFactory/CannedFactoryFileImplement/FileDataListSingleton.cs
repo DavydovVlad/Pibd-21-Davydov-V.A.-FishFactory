@@ -20,7 +20,9 @@ namespace CannedFactoryFileImplement
 
         private readonly string ClientFileName = "Client.xml";
 
-        public List<Component> Components { get; set; }
+		public virtual Implementer Implementer { get; set; }
+        
+		public List<Component> Components { get; set; }
 
         public List<Order> Orders { get; set; }
 
@@ -28,12 +30,15 @@ namespace CannedFactoryFileImplement
 
         public List<Client> Clients { get; set; }
 
+		public List<Implementer> Implementers { get; set; }
+		
         private FileDataListSingleton()
         {
             Components = LoadComponents();
             Orders = LoadOrders();
             Canneds = LoadCanneds();
             Clients = LoadClients();
+			Implementers = LoadImplementers();
         }
 
         public static FileDataListSingleton GetInstance()
@@ -51,6 +56,7 @@ namespace CannedFactoryFileImplement
             SaveOrders();
             SaveCanneds();
             SaveClients();
+			SaveImplementers();
         }
 
         private List<Component> LoadComponents()
@@ -92,6 +98,7 @@ namespace CannedFactoryFileImplement
                         DateCreate = Convert.ToDateTime(elem.Element("DateCreate").Value),
                         DateImplement = String.IsNullOrEmpty(elem.Element("DateImplement").Value) ? DateTime.MinValue : Convert.ToDateTime(elem.Element("DateImplement").Value),
                         ClientId = Convert.ToInt32(elem.Element("ClientId").Value)
+                        ImplementerId = Convert.ToInt32(elem.Element("ImplementerId")?.Value),
                     });
                 }
             }
@@ -145,7 +152,28 @@ namespace CannedFactoryFileImplement
             }
             return list;
         }
-
+		
+		private List<Implementer> LoadImplementers()
+        {
+            var list = new List<Implementer>();
+            if (File.Exists(ImplementerFileName))
+            {
+                XDocument xDocument = XDocument.Load(ImplementerFileName);
+                var xElements = xDocument.Root.Elements("Implementers").ToList();
+                foreach (var elem in xElements)
+                {
+                    list.Add(new Implementer
+                    {
+                        Id = Convert.ToInt32(elem.Attribute("Id").Value),
+                        ImplementerFIO = elem.Element("ClientFIO").Value,
+                        WorkingTime = Convert.ToInt32(elem.Element("WorkingTime").Value),
+                        PauseTime = Convert.ToInt32(elem.Element("PauseTime").Value)
+                    });
+                }
+            }
+            return list;
+        }
+		
         private void SaveComponents()
         {
             if (Components != null)
@@ -177,13 +205,32 @@ namespace CannedFactoryFileImplement
                     new XElement("Status", (int)order.Status),
                     new XElement("DateCreate", order.DateCreate),
                     new XElement("DateImplement", order.DateImplement),
-                    new XElement("ClientId", order.ClientId)));
+                    new XElement("ClientId", order.ClientId))),
+					new XElement("ImplementerId", order.ImplementerId);
                 }
                 XDocument xDocument = new XDocument(xElement);
                 xDocument.Save(OrderFileName);
             }
         }
-
+		
+		private void SaveImplementers()
+        {
+            if (Implementers != null)
+            {
+                var xElement = new XElement("Implementers");
+                foreach (var implementer in Implementers)
+                {
+                    xElement.Add(new XElement("Implementer",
+                    new XAttribute("Id", implementer.Id),
+                    new XElement("ImplementerFIO", implementer.ImplementerFIO),
+                    new XElement("WorkingTime", implementer.WorkingTime),
+                    new XElement("PauseTime", implementer.PauseTime)));
+                }
+                XDocument xDocument = new XDocument(xElement);
+                xDocument.Save(ImplementerFileName);
+            }
+        }
+		
         private void SaveCanneds()
         {
             if (Canneds != null)
