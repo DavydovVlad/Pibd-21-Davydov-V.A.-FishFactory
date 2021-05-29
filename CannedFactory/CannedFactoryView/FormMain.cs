@@ -17,12 +17,16 @@ namespace CannedFactoryView
 		
 		private readonly WorkModeling workModeling;
 
-        public FormMain(OrderLogic orderLogic, ReportLogic Report)
+        private readonly BackUpAbstractLogic _backUpAbstractLogic;
+
+        public FormCarMain(OrderLogic orderLogic, ReportLogic report, WorkModeling workModeling,
+            BackUpAbstractLogic _backUpAbstractLogic)
         {
             InitializeComponent();
             this._orderLogic = orderLogic;
             report = Report;
 			this.workModeling = workModeling;
+			this._backUpAbstractLogic = _backUpAbstractLogic;
         }
 
         private void FormMain_Load(object sender, EventArgs e)
@@ -34,21 +38,13 @@ namespace CannedFactoryView
         {
             try
             {
-                var list = _orderLogic.Read(null);
-                if (list != null)
-                {
-                    dataGridView.DataSource = list;
-                    dataGridView.Columns[0].Visible = false;
-                    dataGridView.Columns[1].Visible = false;
-                    dataGridView.Columns[2].Visible = false;
-                    dataGridView.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-					dataGridView.Columns["ImplementerId"].Visible = false;
-					dataGridView.Columns["ClientId"].Visible = false;
+						Program.ConfigGrid(_orderLogic.Read(null), dataGridView);
 				}
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK,
+               MessageBoxIcon.Error);
             }
         }
 
@@ -141,6 +137,27 @@ namespace CannedFactoryView
         {
             var form = Container.Resolve<FormClients>();
             form.ShowDialog();
+        }
+		  private void createBackupToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (_backUpAbstractLogic != null)
+                {
+                    var fbd = new FolderBrowserDialog();
+                    if (fbd.ShowDialog() == DialogResult.OK)
+                    {
+                        _backUpAbstractLogic.CreateArchive(fbd.SelectedPath);
+                        MessageBox.Show("Backup created", "Message",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK,
+               MessageBoxIcon.Error);
+            }
         }
     }
 }
