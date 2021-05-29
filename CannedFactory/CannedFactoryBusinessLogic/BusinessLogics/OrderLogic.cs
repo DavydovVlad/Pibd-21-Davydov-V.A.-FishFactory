@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using CannedFactoryBusinessLogic.HelperModels;
 using CannedFactoryBusinessLogic.BindingModels;
 using CannedFactoryBusinessLogic.Enums;
 using CannedFactoryBusinessLogic.Interfaces;
@@ -10,12 +11,15 @@ namespace CannedFactoryBusinessLogic.BusinessLogics
     public class OrderLogic
     {
         private readonly IOrderStorage _orderStorage;
-
+		
+		private readonly IClientStorage _clientStorage;
+		
 		private readonly object locker = new object();
 		
-        public OrderLogic(IOrderStorage orderStorage)
+        public OrderLogic(IOrderStorage orderStorage, IClientStorage clientStorage)
         {
             _orderStorage = orderStorage;
+			_clientStorage = clientStorage;
         }
 
         public List<OrderViewModel> Read(OrderBindingModel model)
@@ -41,6 +45,15 @@ namespace CannedFactoryBusinessLogic.BusinessLogics
                 DateCreate = DateTime.Now,
                 Status = OrderStatus.Принят,
                 ClientId = model.ClientId
+            });
+			 MailLogic.MailSendAsync(new MailSendInfo
+            {
+                MailAddress = _clientStorage.GetElement(new ClientBindingModel
+                {
+                    Id = model.ClientId
+                })?.Email,
+                Subject = $"New order",
+                Text = $"Order from {DateTime.Now} for the amount {model.Sum:N2} accepted."
             });
         }
 
@@ -74,6 +87,16 @@ namespace CannedFactoryBusinessLogic.BusinessLogics
 					DateCreate = order.DateCreate,
 					Status = OrderStatus.Выполняется
                 });
+				 MailLogic.MailSendAsync(new MailSendInfo
+                {
+                    MailAddress = _clientStorage.GetElement(new ClientBindingModel
+                    {
+                        Id =order.ClientId
+                    })?.Email,
+                    Subject = $"Order №{order.Id}",
+                    Text = $"Order №{order.Id} took in work."
+                });
+
 			}
 		}
 
@@ -100,6 +123,16 @@ namespace CannedFactoryBusinessLogic.BusinessLogics
                 Status = OrderStatus.Готов,
                 ClientId = order.ClientId
             });
+			//send email
+            MailLogic.MailSendAsync(new MailSendInfo
+            {
+                MailAddress = _clientStorage.GetElement(new ClientBindingModel
+                {
+                    Id = order.ClientId
+                })?.Email,
+                Subject = $"Finish order",
+                Text = $"Order for the amount {order.Sum:N2} finished."
+            });
         }
 
         public void PayOrder(ChangeStatusBindingModel model)
@@ -124,6 +157,15 @@ namespace CannedFactoryBusinessLogic.BusinessLogics
                 DateImplement = order.DateImplement,
                 Status = OrderStatus.Оплачен,
                 ClientId = order.ClientId
+            });
+			  MailLogic.MailSendAsync(new MailSendInfo
+            {
+                MailAddress = _clientStorage.GetElement(new ClientBindingModel
+                {
+                    Id = order.ClientId
+                })?.Email,
+                Subject = $"Paid order",
+                Text = $"Order for the amount {order.Sum:N2} paid."
             });
         }
     }
