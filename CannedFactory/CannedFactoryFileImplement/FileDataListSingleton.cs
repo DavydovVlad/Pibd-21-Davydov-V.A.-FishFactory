@@ -19,6 +19,8 @@ namespace CannedFactoryFileImplement
         private readonly string CannedFileName = "Canned.xml";
 
         private readonly string ClientFileName = "Client.xml";
+		
+		private readonly string MessageFileName = "Message.xml";
 
 		public virtual Implementer Implementer { get; set; }
         
@@ -32,6 +34,8 @@ namespace CannedFactoryFileImplement
 
 		public List<Implementer> Implementers { get; set; }
 		
+		public List<MessageInfo> Messages { get; set; }
+		
         private FileDataListSingleton()
         {
             Components = LoadComponents();
@@ -39,6 +43,7 @@ namespace CannedFactoryFileImplement
             Canneds = LoadCanneds();
             Clients = LoadClients();
 			Implementers = LoadImplementers();
+			Messages = LoadMessages();
         }
 
         public static FileDataListSingleton GetInstance()
@@ -78,7 +83,28 @@ namespace CannedFactoryFileImplement
             }
             return list;
         }
-
+		private List<MessageInfo> LoadMessages()
+        {
+            var list = new List<MessageInfo>();
+            if (File.Exists(OrderFileName))
+            {
+                XDocument xDocument = XDocument.Load(MessageFileName);
+                var xElements = xDocument.Root.Elements("Message").ToList();
+                foreach (var elem in xElements)
+                {
+                    list.Add(new MessageInfo
+                    {
+                        MessageId = elem.Element("MessageId")?.Value,
+                        Body = elem.Element("Body")?.Value,
+                        ClientId = Convert.ToInt32(elem.Element("ClientId")?.Value),
+                        Subject = elem.Element("Subject")?.Value,
+                        SenderName = elem.Element("SenderName")?.Value,
+                        DateDelivery = Convert.ToDateTime(elem.Element("DateDelivery")?.Value)
+                    });
+                }
+            }
+            return list;
+        }
         private List<Order> LoadOrders()
         {
             var list = new List<Order>();
@@ -271,6 +297,26 @@ namespace CannedFactoryFileImplement
                 }
                 XDocument xDocument = new XDocument(xElement);
                 xDocument.Save(ClientFileName);
+            }
+        }
+		 private void SaveMessages()
+        {
+            // прописать логику
+            if (Messages != null)
+            {
+                var xElement = new XElement("Messages");
+                foreach (var msg in Messages)
+                {
+                    xElement.Add(new XElement("Message",
+                    new XAttribute("MessageId", msg.MessageId),
+                    new XElement("Body", msg.Body),
+                    new XElement("DateDelivery", msg.DateDelivery),
+                    new XElement("SenderName", msg.SenderName),
+                    new XElement("Subject", msg.Subject),
+                    new XElement("ClientId", msg.ClientId)));
+                }
+                XDocument xDocument = new XDocument(xElement);
+                xDocument.Save(MessageFileName);
             }
         }
     }
